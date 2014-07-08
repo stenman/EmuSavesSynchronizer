@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+     <property name="log.folder" value="C:/logs"/>
+    
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<!-- THRESHOLD FILTER -->
+		<!-- Puts a threshold on LOGGER and ROOT, i.e. will log level X and above IF LOGGER/ROOT allows it -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+
+		<file>${log.folder}/logbackexample.log</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<minIndex>1</minIndex>
+			<maxIndex>5</maxIndex>
+			<fileNamePattern>${log.folder}/logbackexample.%i.log</fileNamePattern>
+		</rollingPolicy>
+
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>1MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<!-- ROOT LEVEL -->
+	<!-- Enable appenders for all log messages. -->
+	<root level="INFO">
+		<appender-ref ref="FILE" />
+	</root>
+
+	<!-- LOGGER LEVEL -->
+	<!-- Overrides ROOT. Will log level X and above unless a threshold filter prevents it -->
+	<logger name="com.example.filecopyservice" level="ALL" />
+</configuration>
