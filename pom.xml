@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.example.filecopyservice</groupId>
-	<artifactId>FileCopyService</artifactId>
+	<groupId>com.example.emusavescentralizer</groupId>
+	<artifactId>EmuSavesCentralizer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -16,12 +16,34 @@
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
 		<maven-dependency-plugin.version>2.5.1</maven-dependency-plugin.version>
 		<java-service-wrapper.version>3.2.3</java-service-wrapper.version>
+		<commons-io.version>2.4</commons-io.version>
+		<spring.version>4.0.5.RELEASE</spring.version>
 	</properties>
 
-	<name>FileCopyService</name>
+	<name>EmuSavesCentralizer</name>
 
 	<dependencies>
 
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Apache Commons IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+
+		<!-- Java Service Wrapper -->
 		<dependency>
 			<groupId>tanukisoft</groupId>
 			<artifactId>wrapper</artifactId>
@@ -66,7 +88,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>dependency-jars/</classpathPrefix>
-							<mainClass>com.example.filecopyservice.FileCopyService.App</mainClass>
+							<mainClass>com.example.emusavescentralizer.EmuSavesCentralizer.AppMain</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
