@@ -37,5 +37,5 @@
 
 	<!-- LOGGER LEVEL -->
 	<!-- Overrides ROOT. Will log level X and above unless a threshold filter prevents it -->
-	<logger name="com.example.emusavescentralizer" level="ALL" />
+	<logger name="com.example.emusavessynchronizer" level="ALL" />
 </configuration>

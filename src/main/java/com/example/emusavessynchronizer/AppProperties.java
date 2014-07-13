@@ -1,4 +1,4 @@
-package com.example.emusavescentralizer;
+package com.example.emusavessynchronizer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

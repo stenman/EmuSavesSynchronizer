@@ -1,4 +1,4 @@
-package com.example.emusavescentralizer;
+package com.example.emusavessynchronizer;
 
 public interface SaveToStorage {
 	public void save();

@@ -1,4 +1,4 @@
-package com.example.emusavescentralizer;
+package com.example.emusavessynchronizer;
 
 import org.springframework.stereotype.Component;
 

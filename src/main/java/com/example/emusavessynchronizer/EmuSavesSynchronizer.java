@@ -1,10 +1,10 @@
-package com.example.emusavescentralizer;
+package com.example.emusavessynchronizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmuSavesCentralizer {
+public class EmuSavesSynchronizer {
 
 	@Autowired
 	private ExecutionController executionController;

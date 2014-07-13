@@ -1,4 +1,4 @@
-package com.example.emusavescentralizer;
+package com.example.emusavessynchronizer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ public class AppMain {
 	public static void main(String[] args) {
 
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		EmuSavesCentralizer esc = (EmuSavesCentralizer) context.getBean("emuSavesCentralizer");
+		EmuSavesSynchronizer esc = (EmuSavesSynchronizer) context.getBean("emuSavesSynchronizer");
 		logger.info("Service starting");
 		esc.startService();
 		logger.info("Service stopped");
