@@ -11,28 +11,25 @@ public class ExecutionController {
 
 	@Autowired
 	private SaveFilesLoader saveFilesLoader;
-
 	@Autowired
-	@Qualifier("saveNESToStorage")
-	private SaveToStorage saveNES;
-	@Autowired
-	@Qualifier("saveSNESToStorage")
-	private SaveToStorage saveSNES;
+	private HotFolderService hotFolderService;
 
 	private static final Logger logger = LoggerFactory.getLogger(ExecutionController.class);
 
 	public void start() {
-		while (true) {
-			try {
-				saveFilesLoader.loadStoredSaveFiles();
-				// TODO: watch folder for changes --> save files to storage if changes
-				// TODO: Använd Java JDK7 WatchService för att polla filsystemet för förändringar
-				// TODO: http://fahdshariff.blogspot.co.uk/2011/08/java-7-watchservice-for-file-change.html
-				Thread.sleep(1000);
-			} catch (java.lang.InterruptedException ex) {
-				return;
-			}
-		}
+
+		// TODO: watch folder for changes --> save files to storage if changes
+		hotFolderService.watchDir();
+
+		// while (true) {
+		// try {
+		// saveFilesLoader.loadStoredSaveFiles();
+		//
+		// Thread.sleep(1000);
+		// } catch (java.lang.InterruptedException ex) {
+		// return;
+		// }
+		// }
 	}
 
 }

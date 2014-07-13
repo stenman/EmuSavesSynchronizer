@@ -27,7 +27,7 @@ public class LoadNESFromStorage implements LoadFromStorage {
 	@PostConstruct
 	private void init() {
 		try {
-			centralStorage = new File(appProperties.getPropValue("nes.dir.storage"));
+			centralStorage = new File(appProperties.getPropValue("nes.dir.central"));
 			localDisk = new File(appProperties.getPropValue("nes.dir.local"));
 		} catch (IOException e) {
 			e.printStackTrace();
