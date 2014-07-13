@@ -13,17 +13,11 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class FileCopyService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AppMain.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileCopyService.class);
 
-	public FileCopyService() {
-		File source = new File("c:\\temp\\src");
-		File dest = new File("c:\\temp\\dst");
-		copyFileApacheCommons(source, dest);
-	}
-
-	private void copyFileApacheCommons(File source, File dest) {
+	public void copyDirectoryContent(File source, File destination) {
 		try {
-			FileUtils.copyDirectory(source, dest);
+			FileUtils.copyDirectory(source, destination);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
