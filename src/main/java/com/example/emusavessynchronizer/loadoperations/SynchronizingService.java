@@ -1,4 +1,4 @@
-package com.example.emusavessynchronizer.saveoperations;
+package com.example.emusavessynchronizer.loadoperations;
 
 import java.io.IOException;
 
@@ -12,19 +12,15 @@ import org.springframework.stereotype.Component;
 import com.example.emusavessynchronizer.AppProperties;
 import com.example.emusavessynchronizer.nes.NESOperations;
 import com.example.emusavessynchronizer.snes.SNESOperations;
-import com.example.emusavessynchronizer.utils.FileCopyService;
 import com.example.emusavessynchronizer.utils.ProcessFinder;
 
 @Component
-public class StoreSaveFilesService {
+public class SynchronizingService {
 
-	private static final Logger logger = LoggerFactory.getLogger(StoreSaveFilesService.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(SynchronizingService.class);
+	
 	@Autowired
 	private AppProperties appProperties;
-
-	@Autowired
-	private FileCopyService fileCopyService;
 
 	@Autowired
 	private ProcessFinder processFinder;
@@ -35,6 +31,9 @@ public class StoreSaveFilesService {
 	@Autowired
 	private SNESOperations snesOperations;
 
+	private static boolean NES_SAVES_LOADED = false;
+	private static boolean SNES_SAVES_LOADED = false;
+
 	private int checkForRunningProcessesInterval;
 
 	@PostConstruct
@@ -42,55 +41,36 @@ public class StoreSaveFilesService {
 		try {
 			checkForRunningProcessesInterval = Integer.parseInt(appProperties.getPropValue("check.for.running.processes.interval"));
 		} catch (IOException e) {
+			logger.error("Fatal error: "+e);
 			e.printStackTrace();
 		}
 	}
 
-	public static boolean NESTOPIA_RUNNING = false;
-	public static boolean SNES9X_RUNNING = false;
-
-	public void watchDirs() {
-
-		Runnable r1 = new Runnable() {
-
-			@Override
-			public void run() {
-				nesOperations.watchDir();
-			}
-		};
-		Runnable r2 = new Runnable() {
-
-			@Override
-			public void run() {
-				snesOperations.watchDir();
-			}
-		};
-
-		Thread newThread1 = new Thread(r1);
-		Thread newThread2 = new Thread(r2);
+	public void loadStoredSaveFiles() {
 
 		while (true) {
+
 			try {
 				processFinder.updateRunningEmulatorProcesses();
+
 				if (processFinder.isNestopiaRunning()) {
-					if (!NESTOPIA_RUNNING) {
-						newThread1 = new Thread(r1);
-						newThread1.start();
+					if (!NES_SAVES_LOADED) {
+						logger.info("nestopia.exe process started");
+						nesOperations.synchronizeNASToLocalDisk();
+						NES_SAVES_LOADED = true;
 					}
-					NESTOPIA_RUNNING = true;
 				} else {
-					newThread1.interrupt();
-					NESTOPIA_RUNNING = false;
+					NES_SAVES_LOADED = false;
 				}
+
 				if (processFinder.isSnes9XRunning()) {
-					if (!SNES9X_RUNNING) {
-						newThread2 = new Thread(r2);
-						newThread2.start();
+					if (!SNES_SAVES_LOADED) {
+						logger.info("snes9x-x64.exe or snes9x-x86.exe process started");
+						snesOperations.synchronizeNASToLocalDisk();
+						SNES_SAVES_LOADED = true;
 					}
-					SNES9X_RUNNING = true;
 				} else {
-					newThread2.interrupt();
-					SNES9X_RUNNING = false;
+					SNES_SAVES_LOADED = false;
 				}
 				Thread.sleep(checkForRunningProcessesInterval);
 			} catch (java.lang.InterruptedException ex) {
