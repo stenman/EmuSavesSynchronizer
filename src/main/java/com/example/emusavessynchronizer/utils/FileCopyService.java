@@ -15,6 +15,9 @@ public class FileCopyService {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileCopyService.class);
 
+	// TODO: These methods probably needs to be synchronized in order to avoid the "Failed to copy full contents from..." IOException that is
+	// sometimes thrown due to lockdown of the file in question.
+
 	public void copyFile(File source, File destination) {
 		try {
 			logger.debug("Copying " + source + " to " + destination);
