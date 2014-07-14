@@ -84,6 +84,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>${maven-jar-plugin.version}</version>
 				<configuration>
+					<finalName>EmuSavesSynchronizer</finalName>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
