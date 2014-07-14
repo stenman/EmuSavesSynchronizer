@@ -17,6 +17,8 @@ import java.nio.file.WatchService;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,8 @@ import com.example.emusavessynchronizer.utils.FileCopyService;
 
 @Component
 public class NESOperations {
+
+	private static final Logger logger = LoggerFactory.getLogger(NESOperations.class);
 
 	@Autowired
 	private AppProperties appProperties;
@@ -46,13 +50,15 @@ public class NESOperations {
 	}
 
 	public void load() {
-		System.out.println("Loading NES from NAS!");
+		logger.info("Loading NES saves from NAS");
 		fileCopyService.copyDirectoryContent(nas.toFile(), localDisk.toFile());
 	}
 
 	public void watchDir() {
 
 		validatePath(localDisk);
+
+		logger.info("Starting NES watchdir service on directory: " + localDisk);
 
 		try (final WatchService watchService = FileSystems.getDefault().newWatchService()) {
 
@@ -70,12 +76,12 @@ public class NESOperations {
 					if (OVERFLOW == kind) {
 						continue;
 					} else if (ENTRY_CREATE == kind) {
-						System.out.println("created: " + watchEvent.context());
+						logger.info("Created: " + watchEvent.context());
 						fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 					} else if (ENTRY_DELETE == kind) {
-						System.out.println("deleted: " + watchEvent.context());
+						logger.info("Deleted: " + watchEvent.context());
 					} else if (ENTRY_MODIFY == kind) {
-						System.out.println("modified: " + watchEvent.context());
+						logger.info("Modified: " + watchEvent.context());
 						fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 					}
 				}
@@ -87,6 +93,7 @@ public class NESOperations {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} catch (IOException e) {
+			logger.error("" + e);
 			e.printStackTrace();
 		}
 	}
@@ -98,6 +105,7 @@ public class NESOperations {
 				throw new IllegalArgumentException("Path: " + path + " is not a directory");
 			}
 		} catch (IOException ioe) {
+			logger.error("" + ioe);
 			ioe.printStackTrace();
 		}
 	}

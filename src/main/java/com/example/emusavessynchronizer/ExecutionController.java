@@ -38,7 +38,9 @@ public class ExecutionController {
 		Thread newThread1 = new Thread(r1);
 		Thread newThread2 = new Thread(r2);
 		newThread1.start();
+		logger.info("loadSaveFilesService started");
 		newThread2.start();
+		logger.info("storeSaveFilesService started");
 
 	}
 

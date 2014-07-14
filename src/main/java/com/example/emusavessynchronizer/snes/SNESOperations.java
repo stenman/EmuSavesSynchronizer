@@ -17,6 +17,8 @@ import java.nio.file.WatchService;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,8 @@ import com.example.emusavessynchronizer.utils.FileCopyService;
 // Loading saves to its own directory (when triggered by LoadSaveFilesService)
 @Component
 public class SNESOperations {
+
+	private static final Logger logger = LoggerFactory.getLogger(SNESOperations.class);
 
 	@Autowired
 	private AppProperties appProperties;
@@ -48,13 +52,15 @@ public class SNESOperations {
 	}
 
 	public void load() {
-		System.out.println("Loading SNES from NAS!");
+		logger.info("Loading SNES saves from NAS");
 		fileCopyService.copyDirectoryContent(nas.toFile(), localDisk.toFile());
 	}
 
 	public void watchDir() {
 
 		validatePath(localDisk);
+
+		logger.info("Starting SNES watchdir service on directory: " + localDisk);
 
 		try (final WatchService watchService = FileSystems.getDefault().newWatchService()) {
 
@@ -72,12 +78,12 @@ public class SNESOperations {
 					if (OVERFLOW == kind) {
 						continue;
 					} else if (ENTRY_CREATE == kind) {
-						System.out.println("created: " + watchEvent.context());
+						logger.info("created: " + watchEvent.context());
 						fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 					} else if (ENTRY_DELETE == kind) {
-						System.out.println("deleted: " + watchEvent.context());
+						logger.info("deleted: " + watchEvent.context());
 					} else if (ENTRY_MODIFY == kind) {
-						System.out.println("modified: " + watchEvent.context());
+						logger.info("modified: " + watchEvent.context());
 						fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 					}
 				}
@@ -89,6 +95,7 @@ public class SNESOperations {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} catch (IOException e) {
+			logger.error("" + e);
 			e.printStackTrace();
 		}
 	}
@@ -100,6 +107,7 @@ public class SNESOperations {
 				throw new IllegalArgumentException("Path: " + path + " is not a directory");
 			}
 		} catch (IOException ioe) {
+			logger.error("" + ioe);
 			ioe.printStackTrace();
 		}
 	}

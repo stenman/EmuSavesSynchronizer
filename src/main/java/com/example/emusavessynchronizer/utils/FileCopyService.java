@@ -17,8 +17,10 @@ public class FileCopyService {
 
 	public void copyDirectoryContent(File source, File destination) {
 		try {
+			logger.info("Copying " + source + " to " + destination);
 			FileUtils.copyDirectory(source, destination);
 		} catch (IOException e) {
+			logger.error("" + e);
 			e.printStackTrace();
 		}
 	}

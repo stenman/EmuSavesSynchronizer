@@ -38,13 +38,10 @@ public class ProcessFinder {
 					SNES9X_RUNNING = true;
 				}
 			}
-
 			input.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }

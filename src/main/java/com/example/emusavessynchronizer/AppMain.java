@@ -17,6 +17,5 @@ public class AppMain {
 		EmuSavesSynchronizer ess = (EmuSavesSynchronizer) context.getBean("emuSavesSynchronizer");
 		logger.info("Service starting");
 		ess.startService();
-		logger.info("Service stopped");
 	}
 }
