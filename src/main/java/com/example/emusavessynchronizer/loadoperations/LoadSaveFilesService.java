@@ -56,7 +56,8 @@ public class LoadSaveFilesService {
 				if (processFinder.isNestopiaRunning()) {
 					if (!NES_SAVES_LOADED) {
 						logger.info("nestopia.exe process started");
-						nesOperations.load();
+						nesOperations.loadAllFromNAS();
+						nesOperations.saveAllToNAS();
 						NES_SAVES_LOADED = true;
 					}
 				} else {
@@ -66,7 +67,8 @@ public class LoadSaveFilesService {
 				if (processFinder.isSnes9XRunning()) {
 					if (!SNES_SAVES_LOADED) {
 						logger.info("snes9x-x64.exe or snes9x-x86.exe process started");
-						snesOperations.load();
+						snesOperations.loadAllFromNAS();
+						snesOperations.saveAllToNAS();
 						SNES_SAVES_LOADED = true;
 					}
 				} else {

@@ -52,9 +52,14 @@ public class SNESOperations {
 		}
 	}
 
-	public void load() {
+	public void loadAllFromNAS() {
 		logger.info("Loading SNES saves from NAS");
 		fileCopyService.copyDirectoryContent(nas.toFile(), localDisk.toFile());
+	}
+
+	public void saveAllToNAS() {
+		logger.info("Saving SNES saves to NAS");
+		fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 	}
 
 	public void watchDir() {

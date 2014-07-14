@@ -50,9 +50,14 @@ public class NESOperations {
 		}
 	}
 
-	public void load() {
+	public void loadAllFromNAS() {
 		logger.info("Loading NES saves from NAS");
 		fileCopyService.copyDirectoryContent(nas.toFile(), localDisk.toFile());
+	}
+
+	public void saveAllToNAS() {
+		logger.info("Saving NES saves to NAS");
+		fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 	}
 
 	public void watchDir() {
