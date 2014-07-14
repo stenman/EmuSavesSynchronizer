@@ -17,7 +17,7 @@ public class FileCopyService {
 
 	public void copyFile(File source, File destination) {
 		try {
-			logger.info("Copying " + source + " to " + destination);
+			logger.debug("Copying " + source + " to " + destination);
 			FileUtils.copyFileToDirectory(source, destination);
 		} catch (IOException e) {
 			logger.error("" + e);
@@ -27,7 +27,7 @@ public class FileCopyService {
 
 	public void copyDirectoryContent(File source, File destination) {
 		try {
-			logger.info("Copying " + source + " to " + destination);
+			logger.debug("Copying " + source + " to " + destination);
 			FileUtils.copyDirectory(source, destination);
 		} catch (IOException e) {
 			logger.error("" + e);
