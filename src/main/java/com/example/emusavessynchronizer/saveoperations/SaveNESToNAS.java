@@ -1,9 +1,11 @@
-package com.example.emusavessynchronizer;
+package com.example.emusavessynchronizer.saveoperations;
 
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.emusavessynchronizer.utils.FileCopyService;
 
 @Component(value = "saveNESToNAS")
 public class SaveNESToNAS implements SaveToNAS {

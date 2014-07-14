@@ -1,4 +1,4 @@
-package com.example.emusavessynchronizer;
+package com.example.emusavessynchronizer.utils;
 
 import java.io.File;
 import java.io.IOException;

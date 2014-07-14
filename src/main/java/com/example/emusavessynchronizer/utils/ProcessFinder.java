@@ -1,4 +1,4 @@
-package com.example.emusavessynchronizer;
+package com.example.emusavessynchronizer.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
