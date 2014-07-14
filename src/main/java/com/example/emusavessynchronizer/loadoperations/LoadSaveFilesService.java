@@ -1,7 +1,6 @@
 package com.example.emusavessynchronizer.loadoperations;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import javax.annotation.PostConstruct;
 

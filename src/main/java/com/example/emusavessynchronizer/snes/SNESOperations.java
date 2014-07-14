@@ -66,8 +66,6 @@ public class SNESOperations {
 
 				for (WatchEvent<?> watchEvent : key.pollEvents()) {
 
-					// to get the filename
-					final WatchEvent<Path> ev = (WatchEvent<Path>) watchEvent;
 					// to get the event type
 					final WatchEvent.Kind<?> kind = watchEvent.kind();
 
