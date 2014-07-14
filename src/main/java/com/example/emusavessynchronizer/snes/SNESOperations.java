@@ -6,6 +6,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -75,16 +76,18 @@ public class SNESOperations {
 					// to get the event type
 					final WatchEvent.Kind<?> kind = watchEvent.kind();
 
+					File localFile = new File(localDisk + "\\" + watchEvent.context().toString());
+
 					if (OVERFLOW == kind) {
 						continue;
 					} else if (ENTRY_CREATE == kind) {
 						logger.info("created: " + watchEvent.context());
-						fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
+						fileCopyService.copyFile(localFile, nas.toFile());
 					} else if (ENTRY_DELETE == kind) {
 						logger.info("deleted: " + watchEvent.context());
 					} else if (ENTRY_MODIFY == kind) {
 						logger.info("modified: " + watchEvent.context());
-						fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
+						fileCopyService.copyFile(localFile, nas.toFile());
 					}
 				}
 
