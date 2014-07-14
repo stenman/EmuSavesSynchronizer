@@ -1,5 +1,5 @@
 package com.example.emusavessynchronizer;
 
-public interface LoadFromStorage {
+public interface LoadFromNAS {
 	public void load();
 }

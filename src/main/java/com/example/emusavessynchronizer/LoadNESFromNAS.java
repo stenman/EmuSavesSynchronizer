@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component(value = "loadNESFromStorage")
-public class LoadNESFromStorage implements LoadFromStorage {
+@Component(value = "loadNESFromNAS")
+public class LoadNESFromNAS implements LoadFromNAS {
 
 	@Autowired
 	private FileCopyService fileCopyService;
@@ -19,15 +19,15 @@ public class LoadNESFromStorage implements LoadFromStorage {
 	@Autowired
 	private AppProperties appProperties;
 
-	private static final Logger logger = LoggerFactory.getLogger(LoadNESFromStorage.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoadNESFromNAS.class);
 
-	private File centralStorage;
+	private File nas;
 	private File localDisk;
 
 	@PostConstruct
 	private void init() {
 		try {
-			centralStorage = new File(appProperties.getPropValue("nes.dir.central"));
+			nas = new File(appProperties.getPropValue("nes.dir.central"));
 			localDisk = new File(appProperties.getPropValue("nes.dir.local"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -36,8 +36,8 @@ public class LoadNESFromStorage implements LoadFromStorage {
 
 	@Override
 	public void load() {
-		System.out.println("Loading NES from storage!");
-		fileCopyService.copyDirectoryContent(centralStorage, localDisk);
+		System.out.println("Loading NES from NAS!");
+		fileCopyService.copyDirectoryContent(nas, localDisk);
 	}
 
 }

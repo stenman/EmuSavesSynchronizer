@@ -1,5 +1,5 @@
 package com.example.emusavessynchronizer;
 
-public interface SaveToStorage {
+public interface SaveToNAS {
 	public void save();
 }

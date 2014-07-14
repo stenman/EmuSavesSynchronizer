@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProcessFinder {
 
-	public static boolean NESTOPIA_STARTED = false;
-	public static boolean SNES9X_STARTED = false;
+	public static boolean NESTOPIA_RUNNING = false;
+	public static boolean SNES9X_RUNNING = false;
 
-	public boolean isNestopiaStarted() {
-		return NESTOPIA_STARTED;
+	public boolean isNestopiaRunning() {
+		return NESTOPIA_RUNNING;
 	}
 
-	public boolean isSnes9XStarted() {
-		return SNES9X_STARTED;
+	public boolean isSnes9XRunning() {
+		return SNES9X_RUNNING;
 	}
 
 	public void updateRunningEmulatorProcesses() {
 
-		NESTOPIA_STARTED = false;
-		SNES9X_STARTED = false;
+		NESTOPIA_RUNNING = false;
+		SNES9X_RUNNING = false;
 
 		String line;
 		BufferedReader input = null;
@@ -32,10 +32,10 @@ public class ProcessFinder {
 			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while ((line = input.readLine()) != null) {
 				if (line.contains("nestopia.exe")) {
-					NESTOPIA_STARTED = true;
+					NESTOPIA_RUNNING = true;
 				}
 				if (line.contains("snes9x-x64.exe") || line.contains("snes9x-x86.exe")) {
-					SNES9X_STARTED = true;
+					SNES9X_RUNNING = true;
 				}
 			}
 

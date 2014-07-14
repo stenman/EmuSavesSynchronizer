@@ -10,21 +10,43 @@ import org.springframework.stereotype.Component;
 public class ExecutionController {
 
 	@Autowired
-	private SaveFilesLoader saveFilesLoader;
+	private LoadSaveFilesService loadSaveFilesService;
 	@Autowired
-	private HotFolderService hotFolderService;
+	private StoreSaveFilesService storeSaveFilesService;
 
 	private static final Logger logger = LoggerFactory.getLogger(ExecutionController.class);
 
 	public void start() {
 
 		// TODO: watch folder for changes --> save files to storage if changes
-		hotFolderService.watchDir();
+		Runnable r1 = new Runnable() {
+
+			@Override
+			public void run() {
+				storeSaveFilesService.watchDirs();
+			}
+		};
+		Runnable r2 = new Runnable() {
+
+			@Override
+			public void run() {
+				loadSaveFilesService.loadStoredSaveFiles();
+			}
+		};
+
+		Thread newThread1 = new Thread(r1);
+		Thread newThread2 = new Thread(r2);
+		newThread1.start();
+		newThread2.start();
 
 		// while (true) {
 		// try {
 		// saveFilesLoader.loadStoredSaveFiles();
+		// if (processFinder.isNestopiaStarted()) {
+		// }
+		// if (processFinder.isNestopiaStarted()) {
 		//
+		// }
 		// Thread.sleep(1000);
 		// } catch (java.lang.InterruptedException ex) {
 		// return;
