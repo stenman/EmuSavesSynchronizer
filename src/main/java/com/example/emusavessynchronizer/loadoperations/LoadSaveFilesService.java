@@ -1,25 +1,46 @@
 package com.example.emusavessynchronizer.loadoperations;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.example.emusavessynchronizer.AppProperties;
+import com.example.emusavessynchronizer.nes.NESOperations;
+import com.example.emusavessynchronizer.snes.SNESOperations;
 import com.example.emusavessynchronizer.utils.ProcessFinder;
 
 @Component
 public class LoadSaveFilesService {
 
 	@Autowired
+	private AppProperties appProperties;
+
+	@Autowired
 	private ProcessFinder processFinder;
+
 	@Autowired
-	@Qualifier("loadNESFromNAS")
-	private LoadFromNAS loadNES;
+	private NESOperations nesOperations;
+
 	@Autowired
-	@Qualifier("loadSNESFromNAS")
-	private LoadFromNAS loadSNES;
+	private SNESOperations snesOperations;
 
 	private static boolean NES_SAVES_LOADED = false;
 	private static boolean SNES_SAVES_LOADED = false;
+
+	private int checkForRunningProcessesInterval;
+
+	@PostConstruct
+	private void init() {
+		try {
+			checkForRunningProcessesInterval = Integer.parseInt(appProperties.getPropValue("check.for.running.processes.interval"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void loadStoredSaveFiles() {
 
@@ -30,7 +51,7 @@ public class LoadSaveFilesService {
 
 				if (processFinder.isNestopiaRunning()) {
 					if (!NES_SAVES_LOADED) {
-						loadNES.load();
+						nesOperations.load();
 						NES_SAVES_LOADED = true;
 					}
 				} else {
@@ -39,14 +60,13 @@ public class LoadSaveFilesService {
 
 				if (processFinder.isSnes9XRunning()) {
 					if (!SNES_SAVES_LOADED) {
-						loadSNES.load();
+						snesOperations.load();
 						SNES_SAVES_LOADED = true;
 					}
 				} else {
 					SNES_SAVES_LOADED = false;
 				}
-
-				Thread.sleep(1000);
+				Thread.sleep(checkForRunningProcessesInterval);
 			} catch (java.lang.InterruptedException ex) {
 				return;
 			}

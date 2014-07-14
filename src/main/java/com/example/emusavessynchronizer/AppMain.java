@@ -14,9 +14,9 @@ public class AppMain {
 	public static void main(String[] args) {
 
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		EmuSavesSynchronizer esc = (EmuSavesSynchronizer) context.getBean("emuSavesSynchronizer");
+		EmuSavesSynchronizer ess = (EmuSavesSynchronizer) context.getBean("emuSavesSynchronizer");
 		logger.info("Service starting");
-		esc.startService();
+		ess.startService();
 		logger.info("Service stopped");
 	}
 }
