@@ -53,9 +53,9 @@ public class SNESOperations {
 	}
 
 	public void synchronizeNASToLocalDisk() {
-		logger.info("Loading NES saves from NAS");
+		logger.info("Loading SNES saves from NAS");
 		fileCopyService.copyDirectoryContent(nas.toFile(), localDisk.toFile());
-		logger.info("Saving NES saves to NAS");
+		logger.info("Saving SNES saves to NAS");
 		fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
 	}
 

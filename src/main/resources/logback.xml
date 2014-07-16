@@ -2,8 +2,8 @@
 
 <configuration>
 
-     <property name="log.folder" value="./logs"/>
-    
+	<property name="log.folder" value="../logs" />
+
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
 		<!-- THRESHOLD FILTER -->
