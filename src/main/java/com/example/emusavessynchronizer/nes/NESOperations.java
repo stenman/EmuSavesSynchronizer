@@ -52,9 +52,9 @@ public class NESOperations {
 
 	public void synchronizeNASToLocalDisk() {
 		logger.info("Loading NES saves from NAS");
-		fileCopyService.copyDirectoryContent(nas.toFile(), localDisk.toFile());
+		fileCopyService.doCopyDirectory(nas.toFile(), localDisk.toFile());
 		logger.info("Saving NES saves to NAS");
-		fileCopyService.copyDirectoryContent(localDisk.toFile(), nas.toFile());
+		fileCopyService.doCopyDirectory(localDisk.toFile(), nas.toFile());
 	}
 
 	public void watchDir() {
@@ -77,17 +77,18 @@ public class NESOperations {
 					final WatchEvent.Kind<?> kind = watchEvent.kind();
 
 					File localFile = new File(localDisk + "\\" + watchEvent.context().toString());
+					File destinationFile = new File(nas.toFile() + "\\" + watchEvent.context().toString());
 
 					if (OVERFLOW == kind) {
 						continue;
 					} else if (ENTRY_CREATE == kind) {
 						logger.info("Created: " + watchEvent.context());
-						fileCopyService.copyFile(localFile, nas.toFile());
+						fileCopyService.doCopyFile(localFile, destinationFile);
 					} else if (ENTRY_DELETE == kind) {
 						logger.info("Deleted: " + watchEvent.context());
 					} else if (ENTRY_MODIFY == kind) {
 						logger.info("Modified: " + watchEvent.context());
-						fileCopyService.copyFile(localFile, nas.toFile());
+						fileCopyService.doCopyFile(localFile, destinationFile);
 					}
 				}
 

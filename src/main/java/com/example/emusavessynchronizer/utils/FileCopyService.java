@@ -1,9 +1,12 @@
 package com.example.emusavessynchronizer.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -15,26 +18,40 @@ public class FileCopyService {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileCopyService.class);
 
-	// TODO: These methods probably needs to be synchronized in order to avoid the "Failed to copy full contents from..." IOException that is
-	// sometimes thrown due to lockdown of the file in question.
-
-	public void copyFile(File source, File destination) {
-		try {
-			logger.debug("Copying " + source + " to " + destination);
-			FileUtils.copyFileToDirectory(source, destination);
+	public void doCopyFile(File src, File dst) {
+		try (FileInputStream in = new FileInputStream(src)) {
+			try (FileOutputStream out = new FileOutputStream(dst)) {
+				copyFile(in, out);
+			}
+		} catch (FileNotFoundException e) {
+			logger.error("Exception occured when trying to copy file " + src.toString() + " to " + dst.toString() + " ---> " + e);
 		} catch (IOException e) {
-			logger.error("" + e);
-			e.printStackTrace();
+			logger.error("Exception occured when trying to copy file " + src.toString() + " to " + dst.toString() + " ---> " + e);
 		}
 	}
 
-	public void copyDirectoryContent(File source, File destination) {
+	private void copyFile(FileInputStream in, FileOutputStream out) throws IOException {
 		try {
-			logger.debug("Copying " + source + " to " + destination);
-			FileUtils.copyDirectory(source, destination);
+			FileChannel cin = in.getChannel();
+			FileChannel cout = out.getChannel();
+			cin.transferTo(0, cin.size(), cout);
+		} catch (FileNotFoundException e) {
+			logger.error("" + e);
 		} catch (IOException e) {
 			logger.error("" + e);
-			e.printStackTrace();
+		}
+
+	}
+
+	public void doCopyDirectory(File source, File destination) {
+		logger.debug("Copying directory content of " + source + " to " + destination);
+		File[] directoryListing = source.listFiles();
+		if (directoryListing != null) {
+			for (File file : directoryListing) {
+				doCopyFile(file, new File(destination + "\\" + file.getName()));
+			}
+		} else {
+			logger.error("Exception occured when trying to copy directory content of " + source.toString() + " to " + destination.toString());
 		}
 	}
 }
