@@ -34,6 +34,7 @@ public class ProcessFinder {
 		String line;
 		BufferedReader input = null;
 		try {
+			int essInstances = 0;
 			Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
 			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while ((line = input.readLine()) != null) {
@@ -44,10 +45,13 @@ public class ProcessFinder {
 					SNES9X_RUNNING = true;
 				}
 				if (line.contains("emusavessynchronizer.exe")) {
-					EMUSAVESSYNCHRONIZER_RUNNING = true;
+					essInstances++;
 				}
 			}
 			input.close();
+			if (essInstances > 1) {
+				EMUSAVESSYNCHRONIZER_RUNNING = true;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
