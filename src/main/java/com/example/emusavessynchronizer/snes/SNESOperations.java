@@ -89,7 +89,7 @@ public class SNESOperations {
 					} else if (ENTRY_DELETE == kind) {
 						logger.info("deleted: " + watchEvent.context());
 					} else if (ENTRY_MODIFY == kind) {
-						logger.info("modified: " + watchEvent.context());
+						logger.debug("modified: " + watchEvent.context());
 						fileCopyService.doCopyFile(localFile, destinationFile);
 					}
 				}

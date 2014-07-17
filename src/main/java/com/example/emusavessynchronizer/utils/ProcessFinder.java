@@ -11,6 +11,7 @@ public class ProcessFinder {
 
 	public static boolean NESTOPIA_RUNNING = false;
 	public static boolean SNES9X_RUNNING = false;
+	public static boolean EMUSAVESSYNCHRONIZER_RUNNING = false;
 
 	public boolean isNestopiaRunning() {
 		return NESTOPIA_RUNNING;
@@ -20,10 +21,15 @@ public class ProcessFinder {
 		return SNES9X_RUNNING;
 	}
 
+	public boolean isEmuSavesSynchronizerRunning() {
+		return EMUSAVESSYNCHRONIZER_RUNNING;
+	}
+
 	public void updateRunningEmulatorProcesses() {
 
 		NESTOPIA_RUNNING = false;
 		SNES9X_RUNNING = false;
+		EMUSAVESSYNCHRONIZER_RUNNING = false;
 
 		String line;
 		BufferedReader input = null;
@@ -36,6 +42,9 @@ public class ProcessFinder {
 				}
 				if (line.contains("snes9x-x64.exe") || line.contains("snes9x-x86.exe")) {
 					SNES9X_RUNNING = true;
+				}
+				if (line.contains("emusavessynchronizer.exe")) {
+					EMUSAVESSYNCHRONIZER_RUNNING = true;
 				}
 			}
 			input.close();

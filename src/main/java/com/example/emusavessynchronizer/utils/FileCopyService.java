@@ -21,7 +21,7 @@ public class FileCopyService {
 	public void doCopyFile(File src, File dst) {
 		try (FileInputStream in = new FileInputStream(src)) {
 			try (FileOutputStream out = new FileOutputStream(dst)) {
-				copyFile(in, out);
+				copyFile(in, out, src.getName());
 			}
 		} catch (FileNotFoundException e) {
 			logger.error("Exception occured when trying to copy file " + src.toString() + " to " + dst.toString() + " ---> " + e);
@@ -30,11 +30,12 @@ public class FileCopyService {
 		}
 	}
 
-	private void copyFile(FileInputStream in, FileOutputStream out) throws IOException {
+	private void copyFile(FileInputStream in, FileOutputStream out, String fileName) throws IOException {
 		try {
 			FileChannel cin = in.getChannel();
 			FileChannel cout = out.getChannel();
 			cin.transferTo(0, cin.size(), cout);
+			logger.info(fileName + " copied successfully!");
 		} catch (FileNotFoundException e) {
 			logger.error("" + e);
 		} catch (IOException e) {
